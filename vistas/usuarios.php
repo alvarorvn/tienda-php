@@ -1,13 +1,16 @@
-<?php 
+<?php
 session_start();
-if(isset($_SESSION['usuario']) and $_SESSION['usuario']=='admin'){
-	?>
+if (isset($_SESSION['usuario']) and $_SESSION['usuario'] == 'admin') {
+?>
 	<!DOCTYPE html>
 	<html>
+
 	<head>
 		<title>usuarios</title>
 		<?php require_once "menu.php"; ?>
+
 	</head>
+
 	<body>
 		<div class="container">
 			<h1>Administrar usuarios</h1>
@@ -22,7 +25,13 @@ if(isset($_SESSION['usuario']) and $_SESSION['usuario']=='admin'){
 						<input type="text" class="form-control input-sm" name="usuario" id="usuario">
 						<label>Password</label>
 						<input type="text" class="form-control input-sm" name="password" id="password">
-						<p></p>
+						<label>Selecciona un dispositivo</label>
+						<div>
+							<select name="listaDeDispositivos" id="listaDeDispositivos"></select>
+							<button type="button" id="boton">Tomar foto</button>
+						</div>
+						<video width="320" height="200" muted="muted" id="video" style="margin-top: 5px"></video>
+						<canvas height="200" id="canvas" style="display: none;"></canvas>
 						<span class="btn btn-primary" id="registro">Registrar</span>
 
 					</form>
@@ -65,18 +74,21 @@ if(isset($_SESSION['usuario']) and $_SESSION['usuario']=='admin'){
 			</div>
 		</div>
 
+
+		<script src="../js/script.js"></script>
 	</body>
+
 	</html>
 
 	<script type="text/javascript">
-		function agregaDatosUsuario(idusuario){
+		function agregaDatosUsuario(idusuario) {
 
 			$.ajax({
-				type:"POST",
-				data:"idusuario=" + idusuario,
-				url:"../procesos/usuarios/obtenDatosUsuario.php",
-				success:function(r){
-					dato=jQuery.parseJSON(r);
+				type: "POST",
+				data: "idusuario=" + idusuario,
+				url: "../procesos/usuarios/obtenDatosUsuario.php",
+				success: function(r) {
+					dato = jQuery.parseJSON(r);
 
 					$('#idUsuario').val(dato['id_usuario']);
 					$('#nombreU').val(dato['nombre']);
@@ -86,44 +98,42 @@ if(isset($_SESSION['usuario']) and $_SESSION['usuario']=='admin'){
 			});
 		}
 
-		function eliminarUsuario(idusuario){
-			alertify.confirm('¿Desea eliminar este usuario?', function(){ 
+		function eliminarUsuario(idusuario) {
+			alertify.confirm('¿Desea eliminar este usuario?', function() {
 				$.ajax({
-					type:"POST",
-					data:"idusuario=" + idusuario,
-					url:"../procesos/usuarios/eliminarUsuario.php",
-					success:function(r){
-						if(r==1){
+					type: "POST",
+					data: "idusuario=" + idusuario,
+					url: "../procesos/usuarios/eliminarUsuario.php",
+					success: function(r) {
+						if (r == 1) {
 							$('#tablaUsuariosLoad').load('usuarios/tablaUsuarios.php');
 							alertify.success("Eliminado con exito!!");
-						}else{
+						} else {
 							alertify.error("No se pudo eliminar :(");
 						}
 					}
 				});
-			}, function(){ 
+			}, function() {
 				alertify.error('Cancelo !')
 			});
 		}
-
-
 	</script>
 
 	<script type="text/javascript">
-		$(document).ready(function(){
-			$('#btnActualizaUsuario').click(function(){
+		$(document).ready(function() {
+			$('#btnActualizaUsuario').click(function() {
 
-				datos=$('#frmRegistroU').serialize();
+				datos = $('#frmRegistroU').serialize();
 				$.ajax({
-					type:"POST",
-					data:datos,
-					url:"../procesos/usuarios/actualizaUsuario.php",
-					success:function(r){
+					type: "POST",
+					data: datos,
+					url: "../procesos/usuarios/actualizaUsuario.php",
+					success: function(r) {
 
-						if(r==1){
+						if (r == 1) {
 							$('#tablaUsuariosLoad').load('usuarios/tablaUsuarios.php');
 							alertify.success("Actualizado con exito :D");
-						}else{
+						} else {
 							alertify.error("No se pudo actualizar :(");
 						}
 					}
@@ -133,32 +143,41 @@ if(isset($_SESSION['usuario']) and $_SESSION['usuario']=='admin'){
 	</script>
 
 	<script type="text/javascript">
-		$(document).ready(function(){
+		$(document).ready(function() {
 
 			$('#tablaUsuariosLoad').load('usuarios/tablaUsuarios.php');
 
-			$('#registro').click(function(){
+			$('#registro').click(function() {
 
-				vacios=validarFormVacio('frmRegistro');
+				vacios = validarFormVacio('frmRegistro');
 
-				if(vacios > 0){
+				if (vacios > 0) {
 					alertify.alert("Debes llenar todos los campos!!");
 					return false;
 				}
-
-				datos=$('#frmRegistro').serialize();
+				let photo = document.querySelector('#canvas').toDataURL();
+				let nombre = $('#nombre').val();
+				let apellido = $('#apellido').val();
+				let usuario = $('#usuario').val();
+				let password = $('#password').val();
 				$.ajax({
-					type:"POST",
-					data:datos,
-					url:"../procesos/regLogin/registrarUsuario.php",
-					success:function(r){
-						//alert(r);
-
-						if(r==1){
+					type: "POST",
+					data: {
+						nombre,
+						apellido,
+						usuario,
+						password,
+						photo
+					},
+					url: "../procesos/regLogin/registrarUsuario.php",
+					success: function(r) {
+						console.log(r);
+						if (r == 1) {
 							$('#frmRegistro')[0].reset();
 							$('#tablaUsuariosLoad').load('usuarios/tablaUsuarios.php');
+							document.querySelector("#canvas").style.display = "none";
 							alertify.success("Agregado con exito");
-						}else{
+						} else {
 							alertify.error("Fallo al agregar :(");
 						}
 					}
@@ -167,8 +186,8 @@ if(isset($_SESSION['usuario']) and $_SESSION['usuario']=='admin'){
 		});
 	</script>
 
-	<?php 
-}else{
+<?php
+} else {
 	header("location:../index.php");
 }
 ?>

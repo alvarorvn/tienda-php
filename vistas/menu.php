@@ -106,7 +106,7 @@
 </script>
 
 
-<script>
+<!--<script>
   setInterval(hola, 30000);
 
   function hola() {
@@ -116,4 +116,4 @@
       success: function(r) {}
     });
   }
-</script>
+</script>-->

@@ -42,6 +42,7 @@ if (mysqli_num_rows($result) > 0) {
 							<input type="password" name="password" id="password" class="form-control input-sm">
 							<p></p>
 							<span class="btn btn-primary btn-sm" id="entrarSistema">Entrar</span>
+							<a href="recFacial.php" class="btn btn-warning btn-sm">Reconocimiento facial</a>
 							<?php if (!$validar) : ?>
 								<a href="registro.php" class="btn btn-danger btn-sm">Registrar</a>
 							<?php endif; ?>
