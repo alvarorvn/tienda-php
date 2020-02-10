@@ -45,7 +45,7 @@
 
             <?php
             if ($_SESSION['usuario'] == "admin") :
-              ?>
+            ?>
               <li><a href="usuarios.php"><span class="glyphicon glyphicon-user"></span> Gestión usuarios</a>
               </li>
             <?php
@@ -60,8 +60,14 @@
 
             <?php
             if ($_SESSION['usuario'] == "admin") :
-              ?>
-              <li><a href="historial.php"><span class="glyphicon glyphicon-list-alt"></span> Historial de usuarios </a>
+            ?>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-list-alt"></span> Historial <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="historial.php">Usuarios</a>
+                  </li>
+                  <li><a href="ip.php">Rastreo de IP</a></li>
+                </ul>
               </li>
             <?php
             endif;

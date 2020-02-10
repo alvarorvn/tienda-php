@@ -68,7 +68,6 @@ if (isset($_SESSION['usuario']) and $_SESSION['usuario'] == 'admin') {
 					</div>
 					<div class="modal-footer">
 						<button id="btnActualizaUsuario" type="button" class="btn btn-warning" data-dismiss="modal">Actualiza Usuario</button>
-
 					</div>
 				</div>
 			</div>

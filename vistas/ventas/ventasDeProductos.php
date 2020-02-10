@@ -19,7 +19,7 @@ $conexion = $c->conexion();
 				from clientes";
 				$result = mysqli_query($conexion, $sql);
 				while ($cliente = mysqli_fetch_row($result)) :
-					?>
+				?>
 					<option value="<?php echo $cliente[0] ?>"><?php echo $cliente[2] . " " . $cliente[1] ?></option>
 				<?php endwhile; ?>
 			</select>
@@ -33,7 +33,7 @@ $conexion = $c->conexion();
 				$result = mysqli_query($conexion, $sql);
 
 				while ($producto = mysqli_fetch_row($result)) :
-					?>
+				?>
 					<option value="<?php echo $producto[0] ?>"><?php echo $producto[1] ?></option>
 				<?php endwhile; ?>
 			</select>
